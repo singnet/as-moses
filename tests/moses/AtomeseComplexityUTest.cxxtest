@@ -106,12 +106,12 @@ void AtomeseComplexityUTest::test_multiple_number_node()
     Handle num3 = an(NUMBER_NODE, "4");
     Handle num4 = an(NUMBER_NODE, "5");
     HandleSeq hseq2 = {num3, num4};
-    Handle timesLink = al(TIMES_LINK, hseq1);
-    Handle plusLink = al(PLUS_LINK, hseq2);
-    HandleSeq hseq3 = {plusLink, timesLink};
-    Handle greaterThanLink = al(GREATER_THAN_LINK, hseq3);
+    Handle times_link = al(TIMES_LINK, hseq1);
+    Handle plus_link = al(PLUS_LINK, hseq2);
+    HandleSeq hseq3 = {plus_link, times_link};
+    Handle greater_than_link = al(GREATER_THAN_LINK, hseq3);
     complexity_t comptm;
-    comptm = atomese_complexity(greaterThanLink);
+    comptm = atomese_complexity(greater_than_link);
     complexity_t expected = 4;
     TS_ASSERT_EQUALS(comptm, expected);
 }
