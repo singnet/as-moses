@@ -36,12 +36,21 @@ namespace opencog { namespace moses {
  *
  * @return                 LinkValue pointer containing the logical_and.
  */
-void populate(AtomSpace* as, const ITable &itable)
-{
-	OC_ASSERT(false, "populate_atomspace Not implemented yet!");
-}
+void populate(AtomSpace *as, const ITable &itable);
 
-}
-}
+/**
+ * Populate the given atomspace using Otable
+ * @param Atomspace&
+ * @param OTable&
+ * @return
+ */
+void populate_ot(AtomSpace *as, const OTable &otable);
+
 
 #endif
+}
+
+}
+
+
+
