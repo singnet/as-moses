@@ -25,10 +25,12 @@
 #define MOSES_POPULATE_ATOMSPACE_H
 
 #include <moses/data/table/table.h>
+#include <moses/data/table/table_io.h>
 #include <opencog/atomspace/AtomSpace.h>
-
+#include <moses/utils/value_key.h>
+#include <opencog/atoms/base/Link.h>
 namespace opencog { namespace moses {
-
+using namespace combo;
 /**
  * Populate the given atomspace with the input data.
  * @param Atomspace&     as
@@ -36,7 +38,7 @@ namespace opencog { namespace moses {
  *
  * @return                 LinkValue pointer containing the logical_and.
  */
-void populate(AtomSpace *as, const ITable &itable);
+void populate(AtomSpace *as,  ITable &itable);
 
 /**
  * Populate the given atomspace using Otable

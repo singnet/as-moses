@@ -1,14 +1,23 @@
+#include <moses/data/table/table.h>
+#include <moses/data/table/table_io.h>
+#include <opencog/atomspace/AtomSpace.h>
+#include <moses/utils/value_key.h>
+#include <opencog/atoms/base/Link.h>
 #include "populate_atomspace.h"
 
-namespace opencog{ namespace moses {
+namespace opencog{
+    namespace moses {
 
-void populate(AtomSpace *as, const ITable &itable) {
-    std::vector<multi_type_seq>::const_iterator it;
+void populate(AtomSpace *as,  ITable &itable) {
 
-    for (int i = 0, it = itable.begin(); it < itable.end(); it++, i++) {
+    std::vector<multi_type_seq>::const_iterator it,end;
+    Handle in;
+    int col_size = itable.get_types().size();
+    for (int i=0; i< col_size;  i++) {
         id::type_node col_type = itable.get_types().at(i);
+
         int row_size = itable.size();
-        Handle in;
+
         switch (col_type) {
             case id::boolean_type: {
                 std::vector <ProtoAtomPtr> col_values = {};
@@ -44,9 +53,11 @@ void populate(AtomSpace *as, const ITable &itable) {
             }
         }
 
+        //as.add_atom(in);
+
     }
 
-    as.add_atom(in);
+
 }
 
 void populate_otable(AtomSpace *as, const OTable &target){
@@ -83,7 +94,7 @@ void populate_otable(AtomSpace *as, const OTable &target){
         }
         default: {
             std::stringstream ss;
-            ss << col_type;
+//            ss << col_type;
             throw ComboException(TRACE_INFO,
                                  "populate atomspace can not handle type_node %s",
                                  ss.str().c_str());
@@ -92,7 +103,7 @@ void populate_otable(AtomSpace *as, const OTable &target){
 
     }
 
-    as.add_atom(out);
+  //  as.add_atom(out);
 
 
 }

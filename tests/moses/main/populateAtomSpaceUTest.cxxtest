@@ -1,0 +1,29 @@
+#include <cxxtest/TestSuite.h>
+#include <moses/moses/main/populate_atomspace.h>
+#include <moses/data/table/table.h>
+#include <moses/data/table/table_io.h>
+#include <opencog/atomspace/AtomSpace.h>
+using namespace opencog;
+using namespace moses;
+using namespace combo;
+using namespace std;
+
+class populateAtomSpaceUTest: public CxxTest::TestSuite {
+public:
+    populateAtomSpaceUTest();
+
+    void test_contin_type()
+    {
+        ITable it(vector<type_node>(2,id::contin_type));
+        it.push_back({0.4,244.2});
+        it.push_back({9.5,4.2});
+        AtomSpace *_as;
+        populate(_as, it);
+        Handle result = _as->get_handle(NODE,value_key);
+        TS_ASSERT_EQUALS(1,1);
+    }
+
+
+
+
+};
