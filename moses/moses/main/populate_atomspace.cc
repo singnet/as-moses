@@ -8,10 +8,12 @@
 namespace opencog{
     namespace moses {
 
-void populate(AtomSpace *as,  ITable &itable) {
+void populate(AtomSpace& as,  ITable &itable) {
 
     std::vector<multi_type_seq>::const_iterator it,end;
-    Handle in;
+     in = createNode(SCHEMA_NODE, "inputs");
+     std::vector<ProtoAtomPtr> col_patm ={};
+
     int col_size = itable.get_types().size();
     for (int i=0; i< col_size;  i++) {
         id::type_node col_type = itable.get_types().at(i);
@@ -28,7 +30,8 @@ void populate(AtomSpace *as,  ITable &itable) {
                     col_values.push_back(ProtoAtomPtr(createLink(col_data ? TRUE_LINK : FALSE_LINK)));
                 }
                 ProtoAtomPtr ptr_atom(new LinkValue(col_values));
-                in->setValue(opencog::moses::value_key, ptr_atom);
+                in->setValue(value_key, ptr_atom);
+                break;
 
             }
             case id::contin_type: {
@@ -38,10 +41,13 @@ void populate(AtomSpace *as,  ITable &itable) {
                             get_contin(itable.get_column_data(itable.get_labels().at(i)).at(j)));
 
                 ProtoAtomPtr ptr_atom(new FloatValue(col_values_contin));
-                in->setValue(opencog::moses::value_key, ptr_atom);
+                col_patm.push_back(ptr_atom);
+                auto test1 = FloatValueCast(ptr_atom)->value();
+                break;
             }
             case id::enum_type: {
                 //TODO enum_type data to be added to Atomspace
+                break;
             }
 
             default: {
@@ -49,13 +55,22 @@ void populate(AtomSpace *as,  ITable &itable) {
                 ss << col_type;
                 throw ComboException(TRACE_INFO,
                                      "populate atomspace can not handle type_node %s",
-                                     ss.str().c_str());
+                                      ss.str().c_str());
+                break;
             }
+
         }
-
-        //as.add_atom(in);
-
     }
+    ProtoAtomPtr proto_link(new LinkValue(col_patm));
+    auto test2 = LinkValueCast(proto_link)->value();
+
+    for (const ProtoAtomPtr ts : test2)
+    {
+        auto test3= FloatValueCast(ts)->value();
+    }
+
+    in->setValue(value_key,proto_link);
+    as.add_atom(in);
 
 
 }

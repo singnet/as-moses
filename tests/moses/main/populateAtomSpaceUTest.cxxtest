@@ -10,17 +10,29 @@ using namespace std;
 
 class populateAtomSpaceUTest: public CxxTest::TestSuite {
 public:
-    populateAtomSpaceUTest();
+    AtomSpace _as;
 
     void test_contin_type()
     {
         ITable it(vector<type_node>(2,id::contin_type));
         it.push_back({0.4,244.2});
         it.push_back({9.5,4.2});
-        AtomSpace *_as;
         populate(_as, it);
-        Handle result = _as->get_handle(NODE,value_key);
+
+
         TS_ASSERT_EQUALS(1,1);
+
+    }
+
+    void test_boolean_type()
+    {
+     vector<string> labels  {"f1","f2"};
+     ITable it(vector<type_node>(2,id::boolean_type),labels);
+     it.push_back({id::logical_true, id::logical_false});
+     it.push_back({id::logical_false, id::logical_true});
+
+    populate(_as,it);
+
     }
 
 
