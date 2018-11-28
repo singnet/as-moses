@@ -47,7 +47,6 @@ void populate(AtomSpace &as,  ITable &itable);
  * @param OTable&
  * @return
  */
-void populate_ot(AtomSpace *as, const OTable &otable);
 
 
 #endif
