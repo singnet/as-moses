@@ -19,16 +19,16 @@ public:
     vector<ProtoAtomPtr>  linkvalues2;
 
     void test_contin_type() {
-        AtomSpace _as;
+        AtomSpace as;
         //create  a table of inputs
         ITable it(vector<type_node>(2, id::contin_type));
         it.push_back({0.4, 244.2});
         it.push_back({9.5, 4.2});
-        populate(_as, it);
+        populate(&as, it);
 
         //Get the value from Atomspace
-        feature1 =  _as.get_handle(SCHEMA_NODE,f1)->getValue(value_key);
-        feature2 =  _as.get_handle(SCHEMA_NODE,f2)->getValue(value_key);
+        feature1 =  as.get_handle(SCHEMA_NODE,f1)->getValue(value_key);
+        feature2 =  as.get_handle(SCHEMA_NODE,f2)->getValue(value_key);
 
         //Get the value
         vector<double> results1 =FloatValueCast(feature1)->value();
@@ -43,17 +43,17 @@ public:
     }
 
     void test_boolean_type() {
-        AtomSpace _as;
+        AtomSpace as;
         //create a table of inputs
         vector<string> labels{"f1", "f2"};
         ITable it(vector<type_node>(2, id::boolean_type), labels);
         it.push_back({id::logical_true, id::logical_false});
         it.push_back({id::logical_false, id::logical_true});
-        populate(_as, it);
+        populate(&as, it);
 
         //get the inputs from AtomSpace
-        feature1 = _as.get_handle(SCHEMA_NODE, f1)->getValue(value_key);
-        feature2 = _as.get_handle(SCHEMA_NODE, f2)->getValue(value_key);
+        feature1 = as.get_handle(SCHEMA_NODE, f1)->getValue(value_key);
+        feature2 = as.get_handle(SCHEMA_NODE, f2)->getValue(value_key);
 
 
         //Get the values

@@ -8,7 +8,7 @@
 namespace opencog {
     namespace moses {
 
-        void populate(AtomSpace &as, ITable &itable) {
+        void populate(AtomSpace *as, ITable &itable) {
 
             std::vector<multi_type_seq>::const_iterator it, end;
             int col_size = itable.get_types().size();
@@ -29,7 +29,7 @@ namespace opencog {
                         }
                         ProtoAtomPtr ptr_atom(new LinkValue(col_values));
                         feature->setValue(value_key, ptr_atom);
-                        as.add_atom(feature);
+                        as->add_atom(feature);
                         break;
 
                     }
@@ -42,7 +42,7 @@ namespace opencog {
 
                         ProtoAtomPtr ptr_atom(new FloatValue(col_values_contin));
                         feature->setValue(value_key, ptr_atom);
-                        as.add_atom(feature);
+                        as->add_atom(feature);
                         break;
                     }
                     case id::enum_type: {

@@ -38,7 +38,7 @@ using namespace combo;
  *
  * @return                 LinkValue pointer containing the logical_and.
  */
-void populate(AtomSpace &as,  ITable &itable);
+void populate(AtomSpace *as,  ITable &itable);
 
 /**
  * Populate the given atomspace using Otable
