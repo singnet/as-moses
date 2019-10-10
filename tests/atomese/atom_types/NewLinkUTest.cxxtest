@@ -1,0 +1,69 @@
+#include <opencog/guile/SchemeEval.h>
+#include <opencog/atomspace/AtomSpace.h>
+#include <opencog/atoms/core/NumberNode.h>
+#include <opencog/atoms/execution/Instantiator.h>
+#include <opencog/util/Logger.h>
+#include <opencog/asmoses/atomese/atom_types/atom_types.h>
+#include <opencog/asmoses/atomese/atom_types/NewLink.h>
+
+using namespace opencog;
+
+class NewLinkUTest : public CxxTest::TestSuite
+{
+private:
+	AtomSpace *as;
+	SchemeEval *eval;
+
+public:
+	NewLinkUTest(void)
+	{
+		logger().set_level(Logger::DEBUG);
+		logger().set_print_to_stdout_flag(true);
+
+		as = new AtomSpace();
+		eval = new SchemeEval(as);
+		eval->eval("(add-to-load-path \"" PROJECT_SOURCE_DIR "\")");
+		eval->eval("(use-modules (opencog exec))");
+	}
+
+	~NewLinkUTest()
+	{
+		delete eval;
+		delete as;
+		// Erase the log file if no assertions failed.
+		if (!CxxTest::TestTracker::tracker().suiteFailed())
+			std::remove(logger().get_filename().c_str());
+	}
+
+	void setUp(void);
+
+	void tearDown(void);
+
+	void test_newlink(void);
+
+};
+
+void NewLinkUTest::tearDown(void)
+{
+	as->clear();
+}
+
+void NewLinkUTest::setUp(void)
+{
+	as->clear();
+}
+
+void NewLinkUTest::test_newlink()
+{
+	logger().debug("BEGIN TEST: %s", __FUNCTION__);
+
+	eval->eval("(load-from-path \"tests/atomese/atom_types/newlink.scm\")");
+
+	Handle result = eval->eval_h("(cog-execute! test)");
+
+	Handle baz = eval->eval_h("(Or (Predicate \"Q\") (Predicate \"P\"))");
+	printf("got %s", result->to_string().c_str());
+	printf("expected %s\n", baz->to_string().c_str());
+
+	TS_ASSERT(result == baz);
+}

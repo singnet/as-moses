@@ -1,3 +1,4 @@
+ADD_SUBDIRECTORY(scm)
 ADD_SUBDIRECTORY(interpreter)
 ADD_SUBDIRECTORY(atom_types)
 

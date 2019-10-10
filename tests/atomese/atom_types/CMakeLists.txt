@@ -7,3 +7,13 @@ TARGET_LINK_LIBRARIES(ImpulseLinkUTest
 	atomese
 	asmoses_types
 	)
+
+ADD_CXXTEST(NewLinkUTest)
+TARGET_LINK_LIBRARIES(NewLinkUTest
+	execution
+	smob
+	${ATOMSPACE_LIBRARIES}
+	${COGUTIL_LIBRARY}
+	atomese
+	asmoses_types
+	)
