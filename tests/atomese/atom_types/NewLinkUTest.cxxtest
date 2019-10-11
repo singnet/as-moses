@@ -24,6 +24,7 @@ public:
 		eval = new SchemeEval(as);
 		eval->eval("(add-to-load-path \"" PROJECT_SOURCE_DIR "\")");
 		eval->eval("(use-modules (opencog exec))");
+		eval->eval("(load-from-path \"tests/atomese/atom_types/newlink.scm\")");
 	}
 
 	~NewLinkUTest()
@@ -39,7 +40,9 @@ public:
 
 	void tearDown(void);
 
-	void test_newlink(void);
+	void test_newlink_or(void);
+
+	void test_newlink_and(void);
 
 };
 
@@ -53,15 +56,26 @@ void NewLinkUTest::setUp(void)
 	as->clear();
 }
 
-void NewLinkUTest::test_newlink()
+void NewLinkUTest::test_newlink_or()
 {
 	logger().debug("BEGIN TEST: %s", __FUNCTION__);
 
-	eval->eval("(load-from-path \"tests/atomese/atom_types/newlink.scm\")");
-
-	Handle result = eval->eval_h("(cog-execute! test)");
+	Handle result = eval->eval_h("(cog-execute! test_or)");
 
 	Handle baz = eval->eval_h("(Or (Predicate \"Q\") (Predicate \"P\"))");
+	printf("got %s", result->to_string().c_str());
+	printf("expected %s\n", baz->to_string().c_str());
+
+	TS_ASSERT(result == baz);
+}
+
+void NewLinkUTest::test_newlink_and()
+{
+	logger().debug("BEGIN TEST: %s", __FUNCTION__);
+
+	Handle result = eval->eval_h("(cog-execute! test_and)");
+
+	Handle baz = eval->eval_h("(And (Predicate \"Q\") (Predicate \"P\"))");
 	printf("got %s", result->to_string().c_str());
 	printf("expected %s\n", baz->to_string().c_str());
 
