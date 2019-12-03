@@ -1,5 +1,5 @@
 
-MOSES -- Meta-Optimizing Semantic Evolutionary Search
+test-ci MOSES -- Meta-Optimizing Semantic Evolutionary Search
 =====================================================
 
 [![CircleCI](https://img.shields.io/circleci/project/github/singnet/as-moses/master.svg)](https://circleci.com/gh/singnet/as-moses/tree/master)
