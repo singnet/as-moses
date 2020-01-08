@@ -335,7 +335,7 @@ void ann_table_problem::run(option_base* ob)
 // the args are variable length, tables is a variable, and scorer is a type,
 // and I don't feel like fighting templates to make all three happen just
 // exactly right.
-#define REGRESSION(TABLE, SCORER, T_OUTPUT,ARGS)                              \
+#define REGRESSION(TABLE, SCORER, ARGS)                              \
 {                                                                    \
     /* Enable feature selection while selecting exemplar */          \
     if (pms.enable_feature_selection and pms.fs_params.target_size > 0) { \
@@ -362,7 +362,7 @@ void ann_table_problem::run(option_base* ob)
                       *reduct_cand, *reduct_rep, mbcscore,           \
                       pms.opt_params, pms.hc_params, pms.ps_params,  \
                       pms.deme_params, pms.filter_params, pms.meta_params,              \
-                      pms.moses_params, pms.mmr_pa, T_OUTPUT);                 \
+                      pms.moses_params, pms.mmr_pa);                 \
 }
 
 void pre_table_problem::run(option_base* ob)
@@ -428,8 +428,7 @@ void pre_conj_table_problem::run(option_base* ob)
     // indexed number of rows.
     OC_ASSERT(not pms.meta_params.do_boosting,
         "Boosting not supported for the pre problem!");
-	type_node t_output_type = id::boolean_type;
-    REGRESSION(ctable, precision_conj_bscore, t_output_type,
+    REGRESSION(ctable, precision_conj_bscore,
                (ctable, pms.hardness, pms.pre_positive));
 }
 
@@ -441,8 +440,7 @@ void prerec_table_problem::run(option_base* ob)
 
     if (0.0 == pms.hardness) { pms.hardness = 1.0; pms.min_rand_input= 0.5;
         pms.max_rand_input = 1.0; }
-	type_node t_output_type = id::boolean_type;
-    REGRESSION(ctable, prerec_bscore,t_output_type,
+    REGRESSION(ctable, prerec_bscore,
                (ctable, pms.min_rand_input, pms.max_rand_input, pms.hardness));
 }
 
@@ -454,8 +452,7 @@ void recall_table_problem::run(option_base* ob)
 
     if (0.0 == pms.hardness) { pms.hardness = 1.0; pms.min_rand_input= 0.8;
         pms.max_rand_input = 1.0; }
-	type_node t_output_type = id::boolean_type;
-    REGRESSION(ctable, recall_bscore, t_output_type,
+    REGRESSION(ctable, recall_bscore,
                (ctable, pms.min_rand_input, pms.max_rand_input, pms.hardness));
 }
 
@@ -467,8 +464,7 @@ void bep_table_problem::run(option_base* ob)
 
     if (0.0 == pms.hardness) { pms.hardness = 1.0; pms.min_rand_input= 0.0;
         pms.max_rand_input = 0.5; }
-	type_node t_output_type = id::boolean_type;
-    REGRESSION(ctable, bep_bscore, t_output_type,
+    REGRESSION(ctable, bep_bscore,
                (ctable, pms.min_rand_input, pms.max_rand_input, pms.hardness));
 }
 
@@ -477,8 +473,8 @@ void f_one_table_problem::run(option_base* ob)
     problem_params& pms = *dynamic_cast<problem_params*>(ob);
     common_setup(pms);
     common_type_setup(pms, id::boolean_type);
-	type_node t_output_type = id::boolean_type;
-    REGRESSION(ctable, f_one_bscore, t_output_type, (ctable));
+
+    REGRESSION(ctable, f_one_bscore, (ctable));
 }
 
 // problem == it  i.e. input-table based scoring.
@@ -487,10 +483,10 @@ void it_table_problem::run(option_base* ob)
     problem_params& pms = *dynamic_cast<problem_params*>(ob);
     common_setup(pms);
     common_type_setup(pms);
-	type_node t_output_type = id::boolean_type;
+
     // --------- Boolean output type
     if (output_type == id::boolean_type) {
-        REGRESSION(ctable, ctruth_table_bscore,t_output_type, (ctable));
+        REGRESSION(ctable, ctruth_table_bscore, (ctable));
     }
 
     // --------- Enumerated output type
@@ -518,7 +514,7 @@ void it_table_problem::run(option_base* ob)
         } else {
             // Much like the boolean-output-type above,
             // just uses a slightly different scorer.
-            REGRESSION(ctable, enum_effective_bscore, t_output_type, (ctable));
+            REGRESSION(ctable, enum_effective_bscore, (ctable));
         }
     }
 
@@ -530,10 +526,10 @@ void it_table_problem::run(option_base* ob)
                 pms.it_abs_err ? contin_bscore::abs_error :
                 contin_bscore::squared_error;
 
-            REGRESSION(table, contin_bscore, t_output_type, (table, eft));
+            REGRESSION(table, contin_bscore, (table, eft));
 
         } else {
-            REGRESSION(table, discretize_contin_bscore, t_output_type,
+            REGRESSION(table, discretize_contin_bscore,
                        (table.otable, table.itable,
                         pms.discretize_thresholds, pms.weighted_accuracy));
         }
@@ -554,8 +550,8 @@ void select_table_problem::run(option_base* ob)
     problem_params& pms = *dynamic_cast<problem_params*>(ob);
     common_setup(pms);
     common_type_setup(pms, id::boolean_type);
-	type_node t_output_type = id::boolean_type;
-    REGRESSION(ctable, select_bscore, t_output_type,
+
+    REGRESSION(ctable, select_bscore,
                (ctable, pms.min_rand_input,
                         pms.max_rand_input,
                         pms.hardness,
@@ -567,8 +563,8 @@ void cluster_table_problem::run(option_base* ob)
     problem_params& pms = *dynamic_cast<problem_params*>(ob);
     common_setup(pms);
     common_type_setup(pms, id::contin_type);
-	type_node t_output_type = id::boolean_type;
-    REGRESSION(table, cluster_bscore, t_output_type, (table.itable));
+
+    REGRESSION(table, cluster_bscore, (table.itable));
 }
 
 // ==================================================================

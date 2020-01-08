@@ -38,10 +38,9 @@ deme_expander::deme_expander(const type_tree& type_signature,
                              behave_cscore& sc,
                              optimizer_base& opt,
                              const deme_parameters& pa,
-                             const subsample_deme_filter_parameters& fp,
-                             type_node output_t):
+                             const subsample_deme_filter_parameters& fp):
 	_optimize(opt), _type_sig(type_signature), simplify_candidate(si_ca),
-	simplify_knob_building(si_kb), _cscorer(sc), _params(pa), _filter_params(fp), _output_type(output_t)
+	simplify_knob_building(si_kb), _cscorer(sc), _params(pa), _filter_params(fp)
 {
 	random_shuffle_gen = [&](ptrdiff_t i) { return randGen().randint(i); };
 }
@@ -489,8 +488,8 @@ void deme_expander::optimize_demes(int max_evals, time_t max_time)
 
 			// Optimize
 			if (_params.atomspace_port) {
-				ComboToAtomese to_atomese(_output_type);
-				atomese_based_scorer cpx_scorer = atomese_based_scorer(_cscorer, _reps[i], _params.reduce_all, to_atomese, _output_type,
+				ComboToAtomese to_atomese;
+				atomese_based_scorer cpx_scorer = atomese_based_scorer(_cscorer, _reps[i], _params.reduce_all, to_atomese,
 				                                                       _params.atomspace_store ? _params.as : nullptr);
 				_optimize(_demes[i][j], cpx_scorer, max_evals_per_deme, max_time);
 			}
